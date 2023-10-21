@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>hitokuchi review - watch</title>
+
+        <meta charset="utf-8">
+        <meta property="og:title" content="hitokuchi review">
+        <meta property="og:description" content="hitokuchi(ひとくち)は色々なサービスを展開していきます。">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="shortcut icon" href="../hitokuchi_logo.webp" type="image/webp">
+        <link rel="stylesheet" href="../pagestyle.css">
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FCB1XEM56C"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-FCB1XEM56C');
+        </script>
+    </head>
+    <body>
+        <div id="box">
+            <h2>hitokuchi review</h2>
+            <a href="../review/index.html" class="link_color">◀reviewのトップページへ戻る</a> | <a href="sendreview.html" class="link_color">reviewを送る</a><br>
+            <small>サービスを使うことにより<a href="../tos/index.html">利用規約</a>に同意したとみなされます</small><br>
+        </div>
+        <br>
+        <div class="box">
+            <div id="get"></div>
+            <hr>
+            検索<br>
+            <input type="search" id="search_word" class="text" placeholder="空状態で全表示"><br>
+            <div><label>URL検索 <input type="radio" name="which_search" id="radiobox" class="radio" value="URL"></label> | <label>本文検索 <input type="radio" name="which_search" id="radiobox" class="radio" value="Comment"></label></div>
+            <button onclick="get_review();" id="button">受信する</button><br>
+            <small>[注]マークはそのサイトの危険な可能性が高い事を示しています</small><br>
+            <small id="status"></small>
+        </div>
+        <br>
+        <div class="box">
+            <h3>⚠︎reviewに登録されたサイトについて⚠︎</h3>
+            <p>
+                hitokuchiの管理人は登録されたサイトの安全性を約束していません。<br>
+                いずれも登録されたサイトへのアクセスは自己責任の元でお願いします。<br>
+            </p>
+        </div>
+        <script src="config.js"></script>
+        <script>
+            const url = key.url;
+
+            async function get_review() {
+                const status = document.getElementById("status");
+                const get_table = document.getElementById("get");
+                const search_word = document.getElementById("search_word");
+                const radio_box = document.getElementsByName("which_search");
+
+                status.innerHTML = "受信中...";
+                let response;
+
+                if (search_word.value.trim() == "") {
+                    response = await fetch(
+                        url,
+                        {
+                            method: "POST",
+                            body: JSON.stringify({
+                                "request": "getReviewAll"
+                            })
+                        }
+                    ).then((response) => response.text())
+                    .then((data) => JSON.parse(data))
+                    .catch((error) => "No");
+                } else if (radio_box[0].checked) {
+                    response = await fetch(
+                        url,
+                        {
+                            method: "POST",
+                            body: JSON.stringify({
+                                "request": "getReviewSearchInURL",
+                                "search_word": search_word.value
+                            })
+                        }
+                    ).then((response) => response.text())
+                    .then((data) => JSON.parse(data))
+                    .catch((error) => "No");
+                } else if (radio_box[1].checked) {
+                    response = await fetch(
+                        url,
+                        {
+                            method: "POST",
+                            body: JSON.stringify({
+                                "request": "getReviewSearchInComment",
+                                "search_word": search_word.value
+                            })
+                        }
+                    ).then((response) => response.text())
+                    .then((data) => JSON.parse(data))
+                    .catch((error) => "No");
+                } else {
+                    response = "No";
+                    response.result = "No";
+                }
+                
+                if (response.result == "No") {
+                    get_table.innerHTML = "受信エラーもしくはレビューがありません！<br><a href='sendreview.html'>レビューを作成する</a>";
+                    status.innerHTML = "";
+                } else {
+                    let url, comment;
+                    let mem = "";
+
+                    if (response.result.length != 0) {
+                        mem = `<br><table>
+                                <thead>
+                                    <tr><th class="from">URL</th><th class="message_top">Comment</th></tr>
+                                </thead>
+                                <tbody>`;
+                                
+                        for (const i of response.result) {
+                            url = i.split(",")[0];
+                            comment = i.split(",")[1];
+
+                            check_list = [".xyz", ".top", ".cm", ".cn", ".info", "http://"];
+                            let isSafe = true;
+
+                            for (const a of check_list) {
+                                if (url.match(a)) {
+                                    isSafe = false;
+                                    break;
+                                }
+                            }
+
+                            if (isSafe) {
+                                mem += `<tr>
+                                        <td class="from"><a href="${url}" target="_blink" class="link_color">${url}</a></td>
+                                        <td class="message">${comment}</td>
+                                    </tr>`;
+                            } else {
+                                mem += `<tr>
+                                        <td class="from"><a href="${url}" target="_blink">${url}</a> [注]</td>
+                                        <td class="message">${comment}</td>
+                                    </tr>`;
+                            }
+                        }
+
+                        mem += `</tbody>
+                                </table>`;
+                    } else {
+                        mem = "<small>該当結果なし<small>"
+                    }
+
+                    get_table.innerHTML = mem;
+                    status.innerHTML = "";
+                }
+            }
+        </script>
+    </body>
+</html>
