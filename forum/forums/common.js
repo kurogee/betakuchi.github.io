@@ -1,9 +1,44 @@
-// https://script.google.com/macros/s/AKfycbxuFs8sDL20wEVTc7Ewfyw6yA2Txxyr2ifwNZfFE0q63MuEZVxQsk9SVOgkT70yjMZu8g/exec
+// https://script.google.com/macros/s/AKfycbwwdm4Cr3AzXw96KsbKnZixvxNSOMUXcM_Qf9RK_Em4dDUNyYBc64j2HQVG5MSsdQDWMg/exec
 
 async function getip() {
     const res = await fetch('https://ipinfo.io?callback').then(res => res.json()).then(json => json.ip);
+    console.log("IP: " + res);
+
+    return res;
+}
+
+async function search_free_image_from_pixabay(query) {
+    const res = await fetch(`https://pixabay.com/api/?key=40485329-d9754d6ccd9d16f5cdb61db26&q=${encodeURIComponent(query)}&lang=en&per_page=20`).then(res => res.json());
     console.log(res);
     return res;
+}
+
+function paste_url(url) {
+    document.getElementById("message_box").value += `[img ${url}]`;
+}
+
+function delete_images_box() {
+    document.getElementById("box_for_image").innerHTML = "";
+}
+
+async function search_image() {
+    const word = document.getElementById("search_word").value;
+    const images_box = document.getElementById("box_for_image");
+    let response;
+    if (word.trim() != "") {
+        response = await search_free_image_from_pixabay(word).then(res => res.hits);
+
+        images_box.innerHTML = "";
+
+        for (const i in response) {
+            console.log(response[i]);
+            images_box.innerHTML += `<img src="${response[i].userImageURL}" onclick="paste_url('${response[i].userImageURL}');" style="width: calc(90% / 10%); height: auto;">`;
+            //if (i == 9) images_box.innerHTML += "<br>";
+        }
+        images_box.innerHTML += `<br>
+        <small>クリックで画像URLをメッセージ欄に貼り付けます</small>　<button onclick="delete_images_box();">画像リストをリセット</butto>
+        `;
+    }
 }
 
 function replace_text(text) {
@@ -19,8 +54,20 @@ function replace_text(text) {
     result = result.replace(/\[d (.+?)\]/g, "<span class='torikeshi'>$1</span>");
     result = result.replace(/\[i (.+?)\]/g, "<span class='shatai'>$1</span>");
 
-    console.log(result);
+    result = result.replace(/\[[ ]?img (.+?)\]/g, "<br><img src='$1' class='forum_image'><br>");
+
+    console.log("Replaced text: " + result);
     return result;
+}
+
+function returnDate() {
+    const date = new Date();
+    return date.getFullYear()
+            + '/' + ('0' + (date.getMonth() + 1)).slice(-2)
+            + '/' + ('0' + date.getDate()).slice(-2)
+            + ' ' + ('0' + date.getHours()).slice(-2)
+            + ':' + ('0' + date.getMinutes()).slice(-2)
+            + ':' + ('0' + date.getSeconds()).slice(-2);
 }
 
 function reply_prepare(messageID) {
@@ -28,6 +75,7 @@ function reply_prepare(messageID) {
 }
 
 async function get_messages(name="main") {
+
     const response = await fetch(
         url,
         {
@@ -48,11 +96,8 @@ async function get_messages(name="main") {
         const messages_box = document.getElementById("messages_box");
         let result = response.result.filter(_ => { return _.message == "" ? undefined : _ });
 
-        if (result.indexOf(undefined) != -1) {
-            result = {"parentID" : "", "messageID": "", "username" : "", "message" : "メッセージなし", "date" : ""};
-        }
-
         messages_box.innerHTML = "<br>";
+
         for (const message of result) {
             console.log(message);
             if (message.parentID != "") {
@@ -64,7 +109,7 @@ async function get_messages(name="main") {
             } else {
                 messages_box.innerHTML += `
                     <div class="message" id="ID${message.messageID}">
-                        <p id="username">${message.username}<small id="date">　${message.date}</small> <button onclick="reply_prepare('${message.messageID}');">返信</button></p>
+                        <p id="username">${message.username}<small id="date">　${message.date}</small> <button onclick="reply_prepare('${message.messageID}');">↩︎ 返信</button></p>
                         <p id="text">${message.message}</p>
                     </div>
                     <br>`;
@@ -85,15 +130,12 @@ async function send_reply_message(name="main") {
         "parentID" : document.getElementById("reply_to").value,
         "username" : replace_text(document.getElementById("username_box").value),
         "message" : replace_text(document.getElementById("message_box").value),
-        "date" : date.getFullYear()
-                + '/' + ('0' + (date.getMonth() + 1)).slice(-2)
-                + '/' + ('0' + date.getDate()).slice(-2)
-                + ' ' + ('0' + date.getHours()).slice(-2)
-                + ':' + ('0' + date.getMinutes()).slice(-2)
-                + ':' + ('0' + date.getSeconds()).slice(-2),
+        "date" : returnDate(),
         "ip" : await getip(),
-    }
+    };
+    console.log("-+-Send data-+-");
     console.log(data);
+    console.log("----------------");
 
     status.innerText = "送信中...";
     const response = await fetch(
@@ -109,7 +151,6 @@ async function send_reply_message(name="main") {
 
     if (response.result == "ok") {
         status.innerText = "送信しました";
-        document.getElementById("username_box").value = "";
         document.getElementById("message_box").value = "";
         document.getElementById("reply_to").value = "";
         get_messages(document.getElementById("this_forum_name").value);
@@ -127,14 +168,12 @@ async function send_new_message(name="main") {
         "whereToSend" : name,
         "username" : replace_text(document.getElementById("username_box").value),
         "message" : replace_text(document.getElementById("message_box").value),
-        "date" : date.getFullYear()
-                + '/' + ('0' + (date.getMonth() + 1)).slice(-2)
-                + '/' + ('0' + date.getDate()).slice(-2)
-                + ' ' + ('0' + date.getHours()).slice(-2)
-                + ':' + ('0' + date.getMinutes()).slice(-2)
-                + ':' + ('0' + date.getSeconds()).slice(-2),
+        "date" : returnDate(),
         "ip" : await getip(),
-    }
+    };
+    console.log("-+-Send data-+-");
+    console.log(data);
+    console.log("----------------");
 
     status.innerText = "送信中...";
     const response = await fetch(
@@ -150,7 +189,6 @@ async function send_new_message(name="main") {
 
     if (response.result == "ok") {
         status.innerText = "送信しました";
-        document.getElementById("username_box").value = "";
         document.getElementById("message_box").value = "";
         get_messages(document.getElementById("this_forum_name").value);
     } else {
@@ -163,7 +201,7 @@ function sorting_message(name="main") {
     const username = document.getElementById("username_box").value;
     const status = document.getElementById("status");
 
-    if (message.trim() == "" && username.trim() == "") {
+    if (message.trim() == "" || username.trim() == "") {
         status.innerText = "メッセージまたはユーザー名を入力してください";
         return;
     }
