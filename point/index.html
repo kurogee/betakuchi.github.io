@@ -13,7 +13,7 @@
     <body>
         <div class="box">
             <p></p>
-            <a href="../ja-JP/index.html" class="link_color">◀ホームに戻る</a>
+            <a href="../ja-JP/index.html" class="link_color">◀︎ hitokuchiへ戻る</a>
             <h2>ポイントポータル</h2>
         </div>
         <br>
@@ -37,7 +37,16 @@
                     <button id="button-game" onclick="play_game('mine')">　マインスイーパ　</button>
                 </div>
             </div>
-            <br>
+            <hr>
+            <h2>hitokuchiプレミアム</h2>
+            <div>
+                <p>
+                    「hitokuchiプレミアム」とは、ポイントを使って<br>
+                    hitokuchiでちょっと便利な機能を使えるようにするサービスです。
+                </p>
+                <a href="../premium/index.html" class="link_color">プレミアムを購入する [ポイントが必要です]</a><br>
+                <br>
+            </div>
         </div>
         <br>
         <div id="box">
@@ -94,7 +103,9 @@
                         <input type="hidden" name="type" value="logout">
                         <input type="button" value="ログアウト" onclick="logout()">
                     </form>
+
                     <hr>
+
                     <h3>ポイント追加</h3>
                     <form>
                         <input type="text" name="uuid" id="uuid" placeholder="ポイント交換ID" class="text"><br>
@@ -102,7 +113,9 @@
                         <input type="button" value="ポイントを追加する！" onclick="send_change()">　<input type="reset" value="取り消し">
                     </form>
                     <small id="status"></small>
+
                     <hr>
+                    
                     <div>
                         <h3>ポイントを使う</h3>
                         <small id="status2"></small>
@@ -153,6 +166,38 @@
                                 <input type="hidden" class="req2" value="use_point">
                                 <input type="hidden" class="user_id2" value="${user}">
                                 <input type="button" value="交換してメッセージを送る" onclick="send_use('star', 5)">
+                            </form>
+
+                            <form>
+                                <small>ト音フレーム [5pt]</small>
+                                <input type="hidden" class="use_point" value="5">
+                                <input type="hidden" class="req2" value="use_point">
+                                <input type="hidden" class="user_id2" value="${user}">
+                                <input type="button" value="交換してメッセージを送る" onclick="send_use('toon', 6)">
+                            </form>
+
+                            <form>
+                                <small>シンプルフラワーフレーム [5pt]</small>
+                                <input type="hidden" class="use_point" value="5">
+                                <input type="hidden" class="req2" value="use_point">
+                                <input type="hidden" class="user_id2" value="${user}">
+                                <input type="button" value="交換してメッセージを送る" onclick="send_use('flower', 7)">
+                            </form>
+
+                            <form>
+                                <small>スノーフレーム [8pt]</small>
+                                <input type="hidden" class="use_point" value="8">
+                                <input type="hidden" class="req2" value="use_point">
+                                <input type="hidden" class="user_id2" value="${user}">
+                                <input type="button" value="交換してメッセージを送る" onclick="send_use('snow', 8)">
+                            </form>
+
+                            <form>
+                                <small>クリスマスリボンフレーム [8pt]</small>
+                                <input type="hidden" class="use_point" value="8">
+                                <input type="hidden" class="req2" value="use_point">
+                                <input type="hidden" class="user_id2" value="${user}">
+                                <input type="button" value="交換してメッセージを送る" onclick="send_use('ribbon', 9)">
                             </form>
                         </div>
                     </div>`;
