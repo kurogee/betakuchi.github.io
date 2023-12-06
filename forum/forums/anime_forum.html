@@ -36,13 +36,13 @@
     <div class="box">
         <form>
             <p>
-                ユーザー名: <input type="text" id="username_box" style="width: 50%;" value="名無し"><br>
-                リプレイ先: <input type="text" id="reply_to" style="width: 50%;" placeholder="指定なし"><br>
+                ユーザー名: <input type="text" class="text" id="username_box" style="width: 50%;" value="名無し"><br>
+                リプライ先: <input type="text" class="text" id="reply_to" style="width: 50%;" placeholder="指定なし"><br>
                 メッセージ:<br>
                 <textarea id="message_box" class="area" style="font-size: 20px;"></textarea>
             </p>
             <div class="buttons">
-            <input type="button" value="　　送信　　" class="button-forum" onclick="sorting_message(document.getElementById('this_forum_name').value);">
+            <input type="button" value="　　投稿　　" class="button-forum" onclick="sorting_message(document.getElementById('this_forum_name').value);">
             <input type="reset" value="　リセット　" class="button-forum"><br>
         </div>
             <br><small id="status" style="text-align: center;">　　うまくいかない場合は、広告ブロッカーをオフにしてみてください。</small>

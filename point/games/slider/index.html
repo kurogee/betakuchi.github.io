@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <title>マインスイーパ</title>
+        <title>スライドパズル</title>
         <meta charset="utf-8">
-        <meta property="og:title" content="マインスイーパ">
-        <meta property="og:description" content="hitokuchi.f5.siのマインスイーパ">
+        <meta property="og:title" content="スライドパズル">
+        <meta property="og:description" content="hitokuchi.f5.siのスライドパズル">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../../pagestyle.css">
@@ -13,18 +13,17 @@
     </head>
     <body>
         <div id="box">
-            <h2>マインスイーパ</h2>
+            <h2>スライドパズル</h2>
             <a href="../../index.html" class="link_color">〈　ポイントポータルへ戻る　〉</a>　<a href="../../../ja-JP/index.html" class="link_color">〈　日本語ホームへ戻る　〉</a>
             <br><br>
         </div>
         <br>
         <div class="box">
-            <h3>操作方法</h3>
+            <h3>ルール</h3>
             <div class="box">
                 <p></p>
-                左クリック: マスを開ける<br>
-                右クリック: 旗を立てる<br>
-                爆弾以外のマスを全て開けるとクリア！
+                数字をクリックして、1〜15の数字を順番に並べ替えよう！<br>
+                <small>※もし詰んでしまった場合は、申し訳ございませんが<wbr>リロードして最初からやり直してください。</small><br>
                 <p></p>
             </div>
             <hr>
@@ -44,23 +43,13 @@
         <script src="./script/game.js"></script>
 
         <style>
-            .button_for_mine {
-                width: 30px;
-                height: 30px;
-                margin: 0;
-                padding: 0;
-                border: 1.5px solid gray;
-                background-color: #fff;
-                color: #000;
-                font-size: 20px;
-            }
-
-            .black {
-                background-color: #000;
-            }
-
-            .white {
-                background-color: #fff;
+            .number_cell {
+                width: 100px;
+                height: 100px;
+                border: 1px solid black;
+                text-align: center;
+                font-size: 60px;
+                background-color: white;
             }
         </style>
     </body>

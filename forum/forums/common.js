@@ -1,19 +1,9 @@
-// https://script.google.com/macros/s/AKfycbwwdm4Cr3AzXw96KsbKnZixvxNSOMUXcM_Qf9RK_Em4dDUNyYBc64j2HQVG5MSsdQDWMg/exec
-
 async function getip() {
     const res = await fetch('https://ipinfo.io?callback').then(res => res.json()).then(json => json.ip);
     console.log("IP: " + res);
 
     return res;
 }
-
-/*
-async function search_free_image_from_pixabay(query) {
-    const url_for_api = `https://pixabay.com/api/?key=40485329-d9754d6ccd9d16f5cdb61db26&q=${encodeURIComponent(query)}&per_page=15&lang=ja`;
-    const res = await fetch(url_for_api).then(res => res.json());
-    console.log(res);
-    return res;
-}*/
 
 function paste_url(url) {
     document.getElementById("message_box").value += `[img ${url}]`;
@@ -22,27 +12,6 @@ function paste_url(url) {
 function delete_images_box() {
     document.getElementById("box_for_image").innerHTML = "";
 }
-
-/*
-async function search_image() {
-    const word = document.getElementById("search_word").value;
-    const images_box = document.getElementById("box_for_image");
-    let response;
-    if (word.trim() != "") {
-        response = await search_free_image_from_pixabay(word).then(res => res.hits);
-
-        images_box.innerHTML = "";
-
-        for (const i in response) {
-            console.log(response[i]);
-            images_box.innerHTML += `<img src="${response[i].imageURL}" onclick="paste_url('${response[i].imageURL}');" style="width: 30%; height: auto;">`;
-            //if (i == 9) images_box.innerHTML += "<br>";
-        }
-        images_box.innerHTML += `<br>
-        <small>クリックで画像URLをメッセージ欄に貼り付けます</small>　<button onclick="delete_images_box();">画像リストをリセット</butto>
-        `;
-    }
-}*/
 
 function replace_text(text) {
     let result = text;
@@ -58,6 +27,7 @@ function replace_text(text) {
     result = result.replace(/\[i (.+?)\]/g, "<span class='shatai'>$1</span>");
 
     result = result.replace(/\[[ ]?img (.+?)\]/g, "<br><img src='$1' class='forum_image'><br>");
+    result = result.replace(/\[[ ]?emoji (.+?)\]/g, "<img src='$1' class='emoji'>");
 
     console.log("Replaced text: " + result);
     return result;
@@ -75,6 +45,16 @@ function returnDate() {
 
 function reply_prepare(messageID) {
     document.getElementById("reply_to").value = messageID;
+}
+
+function reply_reverse(messages) {
+    const sorted_parentID = messages.filter(i => i.parentID != "");
+    const sorted_normal = messages.filter(i => i.parentID == "");    
+
+    const result = sorted_normal.reverse().concat(sorted_parentID);
+    console.log(result);
+    
+    return result;
 }
 
 async function get_messages(name="main") {
@@ -98,6 +78,7 @@ async function get_messages(name="main") {
     } else {
         const messages_box = document.getElementById("messages_box");
         let result = response.result.filter(_ => { return _.message == "" ? undefined : _ });
+        result = reply_reverse(result);
 
         messages_box.innerHTML = "<br>";
 
@@ -112,7 +93,7 @@ async function get_messages(name="main") {
             } else {
                 messages_box.innerHTML += `
                     <div class="message" id="ID${message.messageID}">
-                        <p id="username">${message.username}<small id="date">　${message.date}</small> <button onclick="reply_prepare('${message.messageID}');">↩︎ 返信</button></p>
+                        <p id="username">${message.username}<small id="date">　${message.date}</small> <button onclick="reply_prepare('${message.messageID}');" class="button-reply">↩︎ 返信</button></p>
                         <p id="text">${message.message}</p>
                     </div>
                     <br>`;
@@ -153,7 +134,7 @@ async function send_reply_message(name="main") {
     .catch(_ => { console.error(_); return "no"; });
 
     if (response.result == "ok") {
-        status.innerText = "送信しました";
+        status.innerText = "送信完了";
         document.getElementById("message_box").value = "";
         document.getElementById("reply_to").value = "";
         get_messages(document.getElementById("this_forum_name").value);
@@ -191,7 +172,7 @@ async function send_new_message(name="main") {
     .catch(_ => { console.error(_); return "no" });
 
     if (response.result == "ok") {
-        status.innerText = "送信しました";
+        status.innerText = "送信完了";
         document.getElementById("message_box").value = "";
         get_messages(document.getElementById("this_forum_name").value);
     } else {

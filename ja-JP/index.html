@@ -38,6 +38,7 @@
                 document.getElementById("blank").innerHTML = "　";
                 document.getElementById("left_blank").innerHTML = "⠀";
                 document.getElementById("right_blank").innerHTML = "⠀";
+                document.getElementById("send-toiawase").innerHTML = "　　　送信　　　";
             }
         });
     </script>
@@ -103,10 +104,10 @@
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         <br>
 
-        <small>hitokuchi 総合index</small>
-        <input type="url" class="text" value="https://hitokuchi.f5.si" readonly><br>
-        <small>hitokuchi 日本語index</small>
-        <input type="url" class="text" value="https://hitokuchi.f5.si/ja-JP/index.html" readonly><br>
+        <small>hitokuchi 総合index</small><br>
+        <input type="url" id="copy-url" class="text" onclick="this.select()" value="https://hitokuchi.f5.si" readonly><br>
+        <small>hitokuchi 日本語index</small><br>
+        <input type="url" id="copy-url-jp" class="text" onclick="this.select()" value="https://hitokuchi.f5.si/ja-JP/index.html" readonly><br>
         <hr>
 
         <div class="phone_share">
@@ -136,12 +137,12 @@
             件名<br>
             <input type="text" id="message_about" class="text"><br>
             お問い合わせ内容<br>
-            <textarea id="area" class="toiawase" style="height: 120px; font-size: 15px;"></textarea><br>
+            <textarea id="toiawase-area" class="toiawase" style="height: 120px; font-size: 15px;"></textarea><br>
 
-            <script src="../mail/config.js"></script>
+            <script src="../config.js"></script>
             <script>
                 async function send() {
-                    const url = key.url;
+                    const url = key.mail_url;
                     const states = document.getElementById("states");
 
                     states.innerHTML = "お待ちください...";
@@ -201,8 +202,8 @@
                     }
                 }
             </script>
-
-            <button onclick="send()">　送信　</button><br>
+            <p></p>
+            <button onclick="send()" class="button-point" id="send-toiawase">　送信　</button><br>
             <small id="states"></small>
             <p></p>
         </div>
@@ -211,8 +212,7 @@
         <div class="box">
             <h3>管理人の部屋</h3>
             ▶<a href="../admin_room/index.html" class="link_color">Let's go!!!!</a>◀
-            <p></p>
-            <p></p>
+            <br><br>
         </div>
         <br>
 

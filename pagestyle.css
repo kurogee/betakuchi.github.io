@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-@import url("https://fonts.googleapis.com/css?family=Zen+Maru+Gothic");
+@import url('https://fonts.googleapis.com/css2?family=Murecho:wght@300&display=swap');
 
 @font-face {
     font-family: "dot_font";
     src: url('./dotFontTtf.ttf') format('truetype');
     src: url('./dotFontOtf.otf') format('opentype');
-} /* ドットフォント (一応程度の感じで...) */
+} /* ドットフォント */
 
 :root {
-    --default-font-family: "Zen Maru Gothic", sans-serif;
+    --default-font-family: "Murecho", sans-serif;
     --dot-font-family: "dot_font", monospace;
     --source-code-font: "Source Code Pro", monospace;
 }
@@ -23,49 +23,37 @@
 
 *:not(input, small, h2, h3, button, textarea) {
     font-size: 20px;
+    appearance: none;
 }
 
 small {
     font-size: 15px;
 }
 
-#user, #area, #button {
+#user, #area {
+    appearance: none;
     border-radius: 10px 10px;
     font-size: 25px;
 }
 
+#user {
+max-width: 90%;
+}
+
 #box, .box {
-    border: 2.5px solid rgb(67, 131, 199);
+    border: 2px solid rgb(67, 131, 199);
     border-radius: 10px 10px;
     height: 100%;
     width: 90%;
-    background-color: rgb(221, 238, 255);
+    background-color: rgb(251, 253, 255);
     width: 70%;
+    box-shadow: 0px 0.3px 4px 0px rgba(0, 0, 0, 0.35);
     /*スマホに合わせて調整*/
     width: 70%;
     @media screen and (max-width: 768px) {
         width: 90%;
         height: 130%;
     }
-}
-
-#button {
-	display: block;
-    text-align: center;
-	text-decoration: none;
-	background: rgb(255, 255, 255);
-	margin: auto;
-	padding: 0.5rem 3rem;
-	font-weight: bold;
-	border: 2px solid rgb(67, 131, 199);
-	color: rgb(67, 131, 199);
-	border-radius: 100vh;
-	transition: 0.3s;
-}
-
-#button:hover {
-	color: #fff;
-	background: rgb(67, 131, 199);
 }
 
 .icons {
@@ -102,7 +90,34 @@ small {
 }
 
 #user, .button, .text {
+    appearance: none;
     width: 95%;
+    border: 2px solid rgb(67, 131, 199);
+    box-shadow: 0px 0.5px 0.5px 0px rgba(0, 0, 0, 0.35);
+    border-radius: 10px 10px;
+    outline: none;
+}
+
+.text #user_id{
+    width: 30%;
+}
+
+.text #user_pass{
+    width: 30%;
+}
+
+.text#copy-url{
+    width: 50%;
+    @media screen and (max-width: 768px) {
+        width: 70%;
+    }
+}
+
+.text#copy-url-jp{
+    width: 50%;
+    @media screen and (max-width: 768px) {
+        width: 70%;
+    }
 }
 
 .emoji {
@@ -111,11 +126,12 @@ small {
 }
 
 .card {
-    border: 5px inset rgb(67, 131, 199);
+    border: 2px solid rgb(67, 131, 199);
     width: 95%;
     height: 80vh;
     border-radius: 10px 10px;
     background-size: cover;
+    box-shadow: 0px 2.5px 2.5px 0px rgba(0, 0, 0, 0.35);
 }
 
 .title_text {
@@ -125,6 +141,19 @@ small {
 #area {
     width: 95%;
     height: 430px;
+    @media screen and (max-width: 768px) {
+        width: 90%;
+    }
+}
+
+#toiawase-area{
+    appearance: none;
+    width: 95%;
+    height: 430px;
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        height: 430px;
+    }
 }
 
 .no_warp {
@@ -155,9 +184,14 @@ table {
 }
 
 textarea {
-    width: 70%;
+    appearance: none;
+    border: 2px solid rgb(67, 131, 199);
+    width: 90%;
     height: 30vh;
     font-size: 13px;
+    box-shadow: 0px 1.5px 1.5px 0px rgba(0, 0, 0, 0.35);
+    border-radius: 10px 10px;
+    outline: none;
 }
 
 .menu {
@@ -183,7 +217,7 @@ textarea {
 }
 
 body, html {
-    background: linear-gradient( #add1f7, #7baee4 );
+    background: linear-gradient( #d3e8ff, #daecfe );
     background-attachment: fixed;
 }
 
@@ -227,24 +261,62 @@ a.link_color:hover {
         font-size: 20px;
     }
 }
+/* ボタン */
 
-.button {
+.button, .button-forum, .button-game,
+ .button-reply, .button-point, #button {
+    appearance: none;
     text-align: center;
     text-decoration: none;
     background: rgb(255, 255, 255);
     margin: auto;
-    padding: 0.6rem 0.8rem;
     font-weight: bold;
-    border: 2px solid rgb(67, 131, 199);
-    color: rgb(67, 131, 199);
+	border: 2px solid rgb(67, 131, 199);
+	color: rgb(67, 131, 199);
     border-radius: 100vh;
     transition: 0.3s;
+    box-shadow: 0px 1.5px 1.5px 0px rgba(0, 0, 0, 0.35);
 }
-
-.button:hover {
+.button:hover, .button-forum:hover, .button-game:hover,
+ .button-reply:hover,  #button:hover, .button-point:hover {
     color: #fff;
     background: rgb(67, 131, 199);
 }
+.button {
+    padding: 0.6rem 0.8rem;
+}
+
+#button {
+    font-size: 25px;
+	display: block;
+	padding: 0.5rem 3rem;
+} 
+
+.button-game {
+	padding: 0.5rem 2rem;
+	border-radius: 10px;
+}
+
+.button-game-image {
+    width: 50px;
+    height: 50px;
+}
+
+.button-forum {
+    padding: 0.6rem 2rem;
+}
+
+.button-point {
+    padding: 0.6rem 2rem;
+    @media screen and (max-width: 768px) {
+        padding: 0.3rem 0.2rem;
+    }
+}
+
+.button-reply{
+    padding: 0.3rem 1.2rem;
+}
+/* ボタンここまで */
 
 .buttons {
     display: flex;  
@@ -283,69 +355,6 @@ a.link_color:hover {
     font-size: 15px;
 }
 
-#button-game {
-	display: block;
-    text-align: center;
-	text-decoration: none;
-	background: rgb(255, 255, 255);
-	margin: auto;
-	padding: 0.5rem 2rem;
-	font-weight: bold;
-	border: 2px solid rgb(67, 131, 199);
-	color: rgb(67, 131, 199);
-	border-radius: 100vh;
-	transition: 0.3s;
-}
-
-#button-game:hover {
-	color: #fff;
-	background: rgb(67, 131, 199);
-}
-
-.error_image {
-    width: 30%;
-    height: auto;
-}
-
-.button-forum {
-    text-align: center;
-    text-decoration: none;
-    background: rgb(255, 255, 255);
-    margin: auto;
-    padding: 0.6rem 2rem;
-    font-weight: bold;
-    border: 2px solid rgb(67, 131, 199);
-    color: rgb(67, 131, 199);
-    border-radius: 100vh;
-    transition: 0.3s;
-}
-
-.button-forum:hover {
-    color: #fff;
-    background: rgb(67, 131, 199);
-}
-
-.button-point {
-    text-align: center;
-    text-decoration: none;
-    background: rgb(255, 255, 255);
-    margin: auto;
-    padding: 0.6rem 2rem;
-    font-weight: bold;
-    border: 2px solid rgb(67, 131, 199);
-    color: rgb(67, 131, 199);
-    border-radius: 100vh;
-    transition: 0.3s;
-    @media screen and (max-width: 768px) {
-        padding: 0.3rem 0.2rem;
-    }
-}
-
-.button-point:hover {
-    color: #fff;
-    background: rgb(67, 131, 199);
-}
-
 .forum_image, .note_image {
     width: 35%;
     height: auto;
@@ -354,4 +363,11 @@ a.link_color:hover {
 .tool_icon {
     width: 30px;
     height: 30px;
+}
+
+.input{
+    appearance: none;
+    border: 2px solid rgb(67, 131, 199);
+    box-shadow: 0px 1.5px 1.5px 0px rgba(0, 0, 0, 0.35);
+    outline: none;
 }
